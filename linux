@@ -1,0 +1,382 @@
+
+echo 'hello!!'
+date
+clear
+cd
+pwd
+ls
+ls -a # also show hidden files
+ls ~ # home dir
+ls -l # long list
+ls -l *.txt
+
+mkdir Documents/Books
+mv *.txt Books
+
+curl 'google.com'
+curl -L 'google.com' # redirect
+curl -o google.html -L 'google.com' # output to the file
+curl localhost:5000/readHello # send get request and receive response
+curl localhost:5000/readHello -i # receive response with headers
+curl -X POST localhost:5000/createHello # send post request
+
+cat dic.txt # show
+less dic.txt # show one page
+
+rm dic.txt
+rm -i dic.txt # interactive
+rmdir onefolder
+
+grep apple dictionary.txt | less
+curl -L 'google.com' | grep goo | wc -l # count lines
+curl -L 'google.com' | grep -c goo # count
+
+num=1
+echo $num
+echo $Lines # shell variables
+echo $PATH # environment variables
+PATH=$PATH:/new/dir/ # add new dir to the PATH var, last until shell gets closed
+
+PS1='$ ' # modify prompt
+
+alias ll='ls -la' # better save into .bash_profile
+alias # show all alias
+
+sudo ls -al /home/ubuntu/.ssh # run as if we were root
+su # switch to root account
+cat /etc/apt/sources.list # available list of package sources
+sudo apt-get update # update available package lists
+sudo apt-get upgrade # update the software itself
+man apt-get # package related functionality
+sudo apt-get autoremove # remove packages no longer needed
+sudo apt-get install finger
+finger # list user info
+finger vagrant # list specific user info with more detail
+cat /etc/passwd # username:password:UID:GID:UID info:home dir:shell path
+sudo adduser student # add new user
+ssh student@127.0.0.1 -p 2222 # log in as student
+sudo cat /etc/sudoers # list of users that have permission to use sudo
+sudo ls /etc/sudoers.d 
+sudo cp /etc/sudoers.d/vagrant /etc/sudoers.d/student
+sudo nano /etc/sudoers.d/student # change vagrant to student
+man passwd # change user pw
+sudo passwd -e student # immediately expire student's password
+
+ssh-keygen # generate public/private rsa key pair, on the client
+mkdir .ssh # on server side, store all key related files
+touch .ssh/authorized_keys # store all pub keys student is allowed to use
+nano .ssh/authorized_keys # copy the local pub content into this file
+chmod 700 .ssh #
+chmod 644 .ssh/authorized_keys #
+ssh student@127.0.0.1 -p 2222 -i ~/.ssh/linuxCourse # log in as student using key
+sudo nano /etc/ssh/sshd_config # change PasswordAuthentication to no
+sudo service ssh restart # restart the service for it to take effect
+sudo chown student ~/.bash_history # change the file owner to student
+sudo chgrp student ~/.bash_history # change the file group to student
+
+sudo ufw status # show firewall status
+sudo ufw default deny incoming # set default incoming policy to deny
+sudo ufw default allow outgoing # set default outgoing policy to allow
+sudo ufw allow ssh # allow ssh connection
+sudo ufw allow 2222/tcp # allow port 2222 for tcp, for our ssh connection
+sudo ufw deny 22 # close port 22
+sudo ufw allow www # allow http connection
+sudo ufw enable # activate firewall 
+sudo ufw disable 
+
+sudo apt-get install apache2 # install apache server
+sudo apt-get install libapache2-mod-wsgi # application handler, mod_wsgi
+sudo apache2ctl restart # restart apache
+sudo apt-get install postgresql 
+sudo service postgresql start # start postgresql server
+
+ssh ubuntu@34.221.128.83 -p 2200 -i ~/.ssh/Lightsail-us-west-2.pem
+
+git init
+git clone https://github.com/udacity/course-git-blog-project
+git clone https://github.com/udacity/course-git-blog-project blog-project # clone and rename
+git status
+git log # down: jdf, up: kub
+git log --oneline # only show sha and commit message
+git log --stat # show changed files and #lines
+git log --patch # -p for short, show actual changes
+git log -p -stat
+git log -p -w # ignore white space changes
+git log -p fdf5493 # start at the specified commit by sha
+git show # display the most recent commit, -p by default, support --stat -w
+git show fdf5493 # show the commit by sha
+
+git add index.html # add file from working dir to staging index
+git add css/app.css js/app.js
+git add . # all files and dirs
+git commit 
+git commit -m "Initial commit"
+git diff # see changes that haven't been committed
+
+git tag v1.0 # lightweight tag, add to the most recent commit
+git tag -a v1.0 # with annotated flag, recommended
+git tag # display all tags
+git log --decorate # show tags, default 
+git tag -d v1.0 # delete tag v1.0, short for --delete
+git tag -a v1.0 a87984 # tag to the commit by sha
+git branch # list all branches
+git branch sidebar # create branch called sidebar
+git checkout sidebar # switch to the branch sidebar 
+git branch alt-sidebar-loc 42a69f # create a branch from sha
+git branch -d sidebar # delete branch, switch to anther branch first
+git branch -D sidebar # force deletion
+git checkout -b footer master # create n checkout footer branch from master
+git log --oneline --decorate --graph --all # show all branches using graph
+git reset --hard HEAD^ # undo the merge
+git merge footer # merge in footer to current branch
+
+git commit --amend # change the last commit message, or last commit if staged
+git revert db7e87a # new commit to undo the provided commit
+git reset HEAD~4^2 # move head and current branch pointer to referenced commit
+git reset --mixed HEAD~1 # the most recent commit moved to working dir
+git reset --soft HEAD~1 # moved to the staging index
+git reset --hard HEAD~1 # moved to the trash 
+
+git remote # show remote repo
+git remote -v # show the full path of remote repo
+git remote add origin https://github.com/chenlueqiu/my-travel-plans.git # create connection
+git remote remove origin # remove origin
+git push origin master # push the local master branch to the remote origin
+git pull origin master # pull remote origin master branch to local current branch, fetch + merge
+git fetch origin master # track remote origin master branch locally
+
+git shortlog # group commits by contributors
+git shortlog -s # only show #commits
+git shortlog -s -n # sort by #commits
+git log --author=Surma # filter by author
+git log --author="Paul Lewis"
+git log --grep bug # git log --grep=bug 
+git log --grep="unit tests"
+
+git remote add upstream https://github.com/udacity/course-collaboration-travel-plans.git
+git remote rename origin mine
+git remote rename upstream source-repo
+git rebase -i HEAD~3 # squash the last three commits as a new commit
+
+python -m http.server 8000
+nslookup www.google.com
+
+
+
+
+#
+vagrant status # show current status of VM
+vagrant up # restart VM (if you reboot the machine) 
+vagrant ssh # ssh into ubuntu
+vagrant suspend # sleep mode
+vagrant halt # turn the VM off
+vagrant destroy # 'format hard drive'
+vagrant reload # restart VM
+
+ping -c3 8.8.8.8 # see if the OS can talk to the google service 8.8.8.8, by sending 3 test packets
+ping -c5 yahoo.com # also shows roundtrip time
+nc -l 8000 # listen on port 8000
+sudo lsof -i # list open file (socket), internet connections only
+host google.com # DNS lookup utility
+host -t a google.com # look for A-record, ipv4
+host -t CNAME udacity.com # look for alias record
+host -t AAAA udacity.com # look for AAAA type record, ipv6
+host -t NS udacity.com # look for name server record
+dig google.com # more technical version of host
+ip addr show # show all the interfaces and the associated addresses
+ifconfig | less # show interfaces
+ip route show default # show the default gateway (router ip)
+netstat -nr # show the default geteway
+sudo tcpdump -n host 8.8.8.8 # monitor traffic for any network app, e.g. ping -c3 8.8.8.8
+sudo tcpdump -n port 53 # see all DNS requests the machine sents
+sudo tcpdump -n port 80 # capture traffics for http apps
+traceroute google.com # show addr of all routers it took to get to google.com
+mtr google.com # also shows trace route, more advanced
+
+sudo lsof -t -i tcp:8000 | xargs kill -9 # 
+
+# sql
+psql # start / log in to PostgreSQL database
+select name, birthdate from animals where species = 'gorilla';
+select max(name) from animals;
+select * from animals limit 10;
+select name from animals where species = 'orangutan' order by birthdate desc;
+select name, birthdate from animals order by name limit 10 offset 20; # start listing from the 20th one
+select species, min(birthdate) from animals group by species;
+select name, count(*) as num 
+from animals group by name order by num desc limit 5;
+insert into animals (name, species, birthdate) values ('Cassie', 'opossum', '2019-06-19')
+select a.name
+from animals a join diet d on a.species = d.species
+where d.food = 'fish'
+select d.food, count(*) num
+from animals a join diet d on a.species = d.species
+group by d.food
+having num = 1
+delete from posts # delete all rows
+
+
+psycopg2.connect("dbname=bears")
+
+psql forum # connect to the database forum
+\d tablename # list column names, types, and modifiers
+\dt # list all the tables in the database.
+\dt+ # list tables plus additional information (notably, how big each table is on disk).
+\H # switch between printing tables in plain text vs. HTML.
+select * from posts \watch # display the table contents and refresh it every two secs
+update posts set content = 'cheese' where content like '%spam%'
+delete from posts where content like '%spam%'
+
+create database newdb;
+drop database if exists newdb0;
+drop database if exists newdb;
+\c newdb # connect to newdb 
+create table newtable(idnum serial primary key, name text);
+drop table if exists newtable;
+create table postal_places (
+	postal_code text,
+	country text,
+	name text,
+	primary key (postal_code, country)
+);
+create table sales (
+	sku text references products (sku), # make sure sku id exists in products, foreign key
+	sale_date date,
+	count integer
+);
+
+
+psql -d news -f newsdata.sql # connect to news, run newsdata.sql
+
+
+
+
+
+curl https://api.cloudmine.me/v1/app/928a78ffd73e4ff78383d1d4c06dd5a7/text -H X-CloudMine-ApiKey:e90ef1aeaadd48de93b45038ed592a06 -i
+
+
+
+
+news=> \dt+
+                     List of relations
+ Schema |   Name   | Type  |  Owner  |  Size  | Description
+--------+----------+-------+---------+--------+-------------
+ public | articles | table | vagrant | 16 kB  |
+ public | authors  | table | vagrant | 16 kB  |
+ public | log      | table | vagrant | 138 MB |
+(3 rows)
+
+news=> \d articles
+                                  Table "public.articles"
+ Column |           Type           |                       Modifiers
+--------+--------------------------+-------------------------------------------------------
+ author | integer                  | not null
+ title  | text                     | not null
+ slug   | text                     | not null
+ lead   | text                     |
+ body   | text                     |
+ time   | timestamp with time zone | default now()
+ id     | integer                  | not null default nextval('articles_id_seq'::regclass)
+Indexes:
+    "articles_pkey" PRIMARY KEY, btree (id)
+    "articles_slug_key" UNIQUE CONSTRAINT, btree (slug)
+Foreign-key constraints:
+    "articles_author_fkey" FOREIGN KEY (author) REFERENCES authors(id)
+
+news=> \d authors
+                         Table "public.authors"
+ Column |  Type   |                      Modifiers
+--------+---------+------------------------------------------------------
+ name   | text    | not null
+ bio    | text    |
+ id     | integer | not null default nextval('authors_id_seq'::regclass)
+Indexes:
+    "authors_pkey" PRIMARY KEY, btree (id)
+Referenced by:
+    TABLE "articles" CONSTRAINT "articles_author_fkey" FOREIGN KEY (author) REFERENCES authors(id)
+
+news=> \d log
+                                  Table "public.log"
+ Column |           Type           |                    Modifiers
+--------+--------------------------+--------------------------------------------------
+ path   | text                     |
+ ip     | inet                     |
+ method | text                     |
+ status | text                     |
+ time   | timestamp with time zone | default now()
+ id     | integer                  | not null default nextval('log_id_seq'::regclass)
+Indexes:
+    "log_pkey" PRIMARY KEY, btree (id)
+
+
+news=> select * from log limit 10;
+             path              |       ip       | method | status |          time          |   id
+-------------------------------+----------------+--------+--------+------------------------+---------
+ /                             | 198.51.100.195 | GET    | 200 OK | 2016-07-01 07:00:00+00 | 1678923
+ /article/candidate-is-jerk    | 198.51.100.195 | GET    | 200 OK | 2016-07-01 07:00:47+00 | 1678924
+ /article/goats-eat-googles    | 198.51.100.195 | GET    | 200 OK | 2016-07-01 07:00:34+00 | 1678925
+ /article/goats-eat-googles    | 198.51.100.195 | GET    | 200 OK | 2016-07-01 07:00:52+00 | 1678926
+ /article/balloon-goons-doomed | 198.51.100.195 | GET    | 200 OK | 2016-07-01 07:00:23+00 | 1678927
+ /                             | 192.0.2.194    | GET    | 200 OK | 2016-07-01 07:00:05+00 | 1678928
+ /article/candidate-is-jerk    | 192.0.2.194    | GET    | 200 OK | 2016-07-01 07:00:54+00 | 1678929
+ /                             | 192.0.2.80     | GET    | 200 OK | 2016-07-01 07:00:15+00 | 1678930
+ /article/bears-love-berries   | 192.0.2.80     | GET    | 200 OK | 2016-07-01 07:01:13+00 | 1678931
+ /                             | 198.51.100.144 | GET    | 200 OK | 2016-07-01 07:00:21+00 | 1678932
+(10 rows)
+
+select method, status, count(*) cnt from log group by method, status order by method, status;
+ method |    status     |   cnt
+--------+---------------+---------
+ GET    | 200 OK        | 1664827
+ GET    | 404 NOT FOUND |   12908
+ 
+select a.name, count(*) cnt from authors a group by a.name order by cnt desc limit 10;
+
+
+select a.id, a.title, count(*) cnt
+from log l join articles a
+on l.path like '/article/%' and l.status = '200 OK' 
+and substring(l.path from 10) = a.slug
+group by a.id, a.title
+order by cnt desc
+limit 3;
+
+select au.id, au.name, count(*) cnt
+from log l join articles ar
+on l.path like '/article/%' and l.status = '200 OK' 
+and substring(l.path from 10) = ar.slug
+join authors au
+on ar.author = au.id
+group by au.id, au.name
+order by cnt desc
+limit 3;
+
+select date(l.time) dt, count(*) total, 
+sum(case when l.status = '200 OK' then 1 else 0 end) as success,
+sum(case when l.status = '404 NOT FOUND' then 1 else 0 end) as failure,
+sum(case when l.status = '404 NOT FOUND' then 1 else 0 end) *1.0 / count(*) as error_rate
+from log l
+group by date(l.time) 
+having sum(case when l.status = '404 NOT FOUND' then 1 else 0 end) *1.0 / count(*) > 0.01
+order by error_rate;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
